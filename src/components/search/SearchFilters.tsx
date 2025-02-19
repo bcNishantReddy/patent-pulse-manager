@@ -25,11 +25,15 @@ interface SearchFiltersProps {
 
 export function SearchFilters({ onFiltersChange }: SearchFiltersProps) {
   const [filters, setFilters] = useState({
+    internalId: "",
     status: "",
     priority: "",
     assignee: "",
     client: "",
+    drafter: "",
+    filler: "",
     dateRange: "",
+    taskType: "",
   });
 
   const handleFilterChange = (key: string, value: string) => {
@@ -50,6 +54,32 @@ export function SearchFilters({ onFiltersChange }: SearchFiltersProps) {
           <SheetTitle>Search Filters</SheetTitle>
         </SheetHeader>
         <div className="mt-6 space-y-6">
+          <div className="space-y-2">
+            <Label>Internal ID</Label>
+            <Input
+              value={filters.internalId}
+              onChange={(e) => handleFilterChange("internalId", e.target.value)}
+              placeholder="Search by internal ID"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Task Type</Label>
+            <Select
+              value={filters.taskType}
+              onValueChange={(value) => handleFilterChange("taskType", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select task type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ps">PS</SelectItem>
+                <SelectItem value="cs">CS</SelectItem>
+                <SelectItem value="fer">FER</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           <div className="space-y-2">
             <Label>Status</Label>
             <Select
@@ -87,33 +117,33 @@ export function SearchFilters({ onFiltersChange }: SearchFiltersProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>Assignee</Label>
+            <Label>Drafter</Label>
             <Select
-              value={filters.assignee}
-              onValueChange={(value) => handleFilterChange("assignee", value)}
+              value={filters.drafter}
+              onValueChange={(value) => handleFilterChange("drafter", value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select assignee" />
+                <SelectValue placeholder="Select drafter" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="john-doe">John Doe</SelectItem>
-                <SelectItem value="jane-smith">Jane Smith</SelectItem>
+                <SelectItem value="drafter1">Drafter 1</SelectItem>
+                <SelectItem value="drafter2">Drafter 2</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label>Client</Label>
+            <Label>Filler</Label>
             <Select
-              value={filters.client}
-              onValueChange={(value) => handleFilterChange("client", value)}
+              value={filters.filler}
+              onValueChange={(value) => handleFilterChange("filler", value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select client" />
+                <SelectValue placeholder="Select filler" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="acme">Acme Corporation</SelectItem>
-                <SelectItem value="techcorp">TechCorp Inc</SelectItem>
+                <SelectItem value="filler1">Filler 1</SelectItem>
+                <SelectItem value="filler2">Filler 2</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -140,11 +170,15 @@ export function SearchFilters({ onFiltersChange }: SearchFiltersProps) {
             className="w-full"
             onClick={() => {
               setFilters({
+                internalId: "",
                 status: "",
                 priority: "",
                 assignee: "",
                 client: "",
+                drafter: "",
+                filler: "",
                 dateRange: "",
+                taskType: "",
               });
               onFiltersChange({});
             }}

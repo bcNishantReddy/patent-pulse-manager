@@ -28,7 +28,7 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
     name: "",
     email: "",
     role: "",
-    department: "",
+    password: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -90,23 +90,17 @@ export function AddEmployeeDialog({ open, onOpenChange }: AddEmployeeDialogProps
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="department">Department</Label>
-            <Select
-              value={formData.department}
-              onValueChange={(value) =>
-                setFormData({ ...formData, department: value })
+            <Label htmlFor="password">Initial Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter initial password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
               }
               required
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select department" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="patents">Patents</SelectItem>
-                <SelectItem value="legal">Legal</SelectItem>
-                <SelectItem value="rd">R&D</SelectItem>
-              </SelectContent>
-            </Select>
+            />
           </div>
           <DialogFooter>
             <Button type="submit">Add Employee</Button>
