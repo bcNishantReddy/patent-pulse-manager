@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Plus, Filter } from "lucide-react";
 import { AppSidebar } from "@/components/layout/AppSidebar";
@@ -21,6 +20,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal } from "lucide-react";
+import { AddPatentDialog } from "@/components/dialogs/AddPatentDialog";
+import { SearchFilters } from "@/components/search/SearchFilters";
 
 const patents = [
   {
@@ -39,7 +40,6 @@ const patents = [
     filingDate: "2024-01-30",
     priority: "Medium",
   },
-  // Add more patent data as needed
 ];
 
 const statusColors = {
@@ -52,6 +52,12 @@ const statusColors = {
 
 export default function PatentsPage() {
   const [search, setSearch] = useState("");
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+
+  const handleFiltersChange = (filters: any) => {
+    console.log("Filters changed:", filters);
+    // Implement filter logic
+  };
 
   return (
     <SidebarProvider>
@@ -76,11 +82,9 @@ export default function PatentsPage() {
                 onChange={(e) => setSearch(e.target.value)}
                 className="max-w-sm"
               />
-              <Button variant="outline" size="icon">
-                <Filter className="h-4 w-4" />
-              </Button>
+              <SearchFilters onFiltersChange={handleFiltersChange} />
             </div>
-            <Button>
+            <Button onClick={() => setAddDialogOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               New Patent
             </Button>
@@ -142,6 +146,11 @@ export default function PatentsPage() {
               </TableBody>
             </Table>
           </div>
+
+          <AddPatentDialog
+            open={addDialogOpen}
+            onOpenChange={setAddDialogOpen}
+          />
         </main>
       </div>
     </SidebarProvider>

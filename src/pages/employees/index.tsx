@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { AppSidebar } from "@/components/layout/AppSidebar";
@@ -20,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
+import { AddEmployeeDialog } from "@/components/dialogs/AddEmployeeDialog";
 
 const employees = [
   {
@@ -43,6 +43,7 @@ const employees = [
 
 export default function EmployeesPage() {
   const [search, setSearch] = useState("");
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   return (
     <SidebarProvider>
@@ -68,7 +69,7 @@ export default function EmployeesPage() {
                 className="max-w-sm"
               />
             </div>
-            <Button>
+            <Button onClick={() => setAddDialogOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Add Employee
             </Button>
@@ -119,6 +120,11 @@ export default function EmployeesPage() {
               </TableBody>
             </Table>
           </div>
+
+          <AddEmployeeDialog
+            open={addDialogOpen}
+            onOpenChange={setAddDialogOpen}
+          />
         </main>
       </div>
     </SidebarProvider>

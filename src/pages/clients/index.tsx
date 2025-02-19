@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { AppSidebar } from "@/components/layout/AppSidebar";
@@ -20,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
+import { AddClientDialog } from "@/components/dialogs/AddClientDialog";
 
 const clients = [
   {
@@ -43,6 +43,7 @@ const clients = [
 
 export default function ClientsPage() {
   const [search, setSearch] = useState("");
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
 
   return (
     <SidebarProvider>
@@ -68,7 +69,7 @@ export default function ClientsPage() {
                 className="max-w-sm"
               />
             </div>
-            <Button>
+            <Button onClick={() => setAddDialogOpen(true)}>
               <Plus className="w-4 h-4 mr-2" />
               Add Client
             </Button>
@@ -121,6 +122,11 @@ export default function ClientsPage() {
               </TableBody>
             </Table>
           </div>
+
+          <AddClientDialog
+            open={addDialogOpen}
+            onOpenChange={setAddDialogOpen}
+          />
         </main>
       </div>
     </SidebarProvider>
