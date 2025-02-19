@@ -59,7 +59,18 @@ export function AddPatentDialog({ open, onOpenChange }: AddPatentDialogProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    
+    // Determine initial status based on PS task assignments
+    const initialStatus = formData.tasks.ps.drafter && formData.tasks.ps.filler
+      ? "PS Drafting"
+      : "CS Drafting";
+    
+    const submissionData = {
+      ...formData,
+      status: initialStatus,
+    };
+    
+    console.log("Form submitted:", submissionData);
     onOpenChange(false);
   };
 
