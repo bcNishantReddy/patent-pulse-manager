@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { AppSidebar } from "@/components/layout/AppSidebar";
@@ -20,6 +21,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { AddEmployeeDialog } from "@/components/dialogs/AddEmployeeDialog";
+import { DeleteConfirmationDialog } from "@/components/dialogs/DeleteConfirmationDialog";
+import { EmployeeDetailsDialog } from "@/components/dialogs/EmployeeDetailsDialog";
+import { useNavigate } from "react-router-dom";
 
 const employees = [
   {
@@ -29,6 +33,7 @@ const employees = [
     role: "Drafter",
     status: "Active",
     joinedDate: "2024-01-15",
+    patentsCount: 12,
   },
   {
     id: 2,
@@ -37,13 +42,23 @@ const employees = [
     role: "Filler",
     status: "Active",
     joinedDate: "2024-02-01",
+    patentsCount: 8,
   },
-  // Add more employee data as needed
 ];
 
 export default function EmployeesPage() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<number | null>(null);
+
+  const handleDeleteConfirm = () => {
+    console.log("Deleting employee:", selectedEmployee);
+    setDeleteDialogOpen(false);
+    setSelectedEmployee(null);
+  };
 
   return (
     <SidebarProvider>
@@ -83,6 +98,7 @@ export default function EmployeesPage() {
                   <TableHead>Email</TableHead>
                   <TableHead>Role</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Patents</TableHead>
                   <TableHead>Joined Date</TableHead>
                   <TableHead className="w-[50px]"></TableHead>
                 </TableRow>
@@ -96,6 +112,7 @@ export default function EmployeesPage() {
                     <TableCell>{employee.email}</TableCell>
                     <TableCell>{employee.role}</TableCell>
                     <TableCell>{employee.status}</TableCell>
+                    <TableCell>{employee.patentsCount} Patents</TableCell>
                     <TableCell>{employee.joinedDate}</TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -108,8 +125,27 @@ export default function EmployeesPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setSelectedEmployee(employee.id);
+                              setDetailsDialogOpen(true);
+                            }}
+                          >
+                            View Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => navigate(`/employees/${employee.id}/patents`)}
+                          >
+                            View Patents
+                          </DropdownMenuItem>
                           <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive">
+                          <DropdownMenuItem
+                            className="text-destructive"
+                            onClick={() => {
+                              setSelectedEmployee(employee.id);
+                              setDeleteDialogOpen(true);
+                            }}
+                          >
                             Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -124,6 +160,20 @@ export default function EmployeesPage() {
           <AddEmployeeDialog
             open={addDialogOpen}
             onOpenChange={setAddDialogOpen}
+          />
+
+          <DeleteConfirmationDialog
+            open={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
+            onConfirm={handleDeleteConfirm}
+            title="Delete Employee"
+            description="Are you sure you want to delete this employee? This action cannot be undone."
+          />
+
+          <EmployeeDetailsDialog
+            open={detailsDialogOpen}
+            onOpenChange={setDetailsDialogOpen}
+            employeeId={selectedEmployee}
           />
         </main>
       </div>

@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { Plus, Filter } from "lucide-react";
+import { Plus } from "lucide-react";
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal } from "lucide-react";
 import { AddPatentDialog } from "@/components/dialogs/AddPatentDialog";
+import { EditPatentDialog } from "@/components/dialogs/EditPatentDialog";
+import { PatentDetailsDialog } from "@/components/dialogs/PatentDetailsDialog";
+import { DeleteConfirmationDialog } from "@/components/dialogs/DeleteConfirmationDialog";
 import { SearchFilters } from "@/components/search/SearchFilters";
 
 const patents = [
@@ -53,10 +57,19 @@ const statusColors = {
 export default function PatentsPage() {
   const [search, setSearch] = useState("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [viewDetailsOpen, setViewDetailsOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedPatent, setSelectedPatent] = useState<string | null>(null);
 
   const handleFiltersChange = (filters: any) => {
     console.log("Filters changed:", filters);
-    // Implement filter logic
+  };
+
+  const handleDeleteConfirm = () => {
+    console.log("Deleting patent:", selectedPatent);
+    setDeleteDialogOpen(false);
+    setSelectedPatent(null);
   };
 
   return (
@@ -132,10 +145,30 @@ export default function PatentsPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>View Details</DropdownMenuItem>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setSelectedPatent(patent.id);
+                              setViewDetailsOpen(true);
+                            }}
+                          >
+                            View Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setSelectedPatent(patent.id);
+                              setEditDialogOpen(true);
+                            }}
+                          >
+                            Edit
+                          </DropdownMenuItem>
                           <DropdownMenuItem>Assign</DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive">
+                          <DropdownMenuItem
+                            className="text-destructive"
+                            onClick={() => {
+                              setSelectedPatent(patent.id);
+                              setDeleteDialogOpen(true);
+                            }}
+                          >
                             Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -150,6 +183,28 @@ export default function PatentsPage() {
           <AddPatentDialog
             open={addDialogOpen}
             onOpenChange={setAddDialogOpen}
+          />
+
+          {selectedPatent && (
+            <EditPatentDialog
+              open={editDialogOpen}
+              onOpenChange={setEditDialogOpen}
+              patentId={selectedPatent}
+            />
+          )}
+
+          <PatentDetailsDialog
+            open={viewDetailsOpen}
+            onOpenChange={setViewDetailsOpen}
+            patentId={selectedPatent}
+          />
+
+          <DeleteConfirmationDialog
+            open={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
+            onConfirm={handleDeleteConfirm}
+            title="Delete Patent"
+            description="Are you sure you want to delete this patent? This action cannot be undone."
           />
         </main>
       </div>
