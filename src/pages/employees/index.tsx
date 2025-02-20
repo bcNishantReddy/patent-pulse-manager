@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { AppSidebar } from "@/components/layout/AppSidebar";
@@ -56,6 +55,26 @@ export default function EmployeesPage() {
 
   const handleDeleteConfirm = () => {
     console.log("Deleting employee:", selectedEmployee);
+    setDeleteDialogOpen(false);
+    setSelectedEmployee(null);
+  };
+
+  const handleOpenDetails = (employeeId: number) => {
+    setSelectedEmployee(employeeId);
+    setDetailsDialogOpen(true);
+  };
+
+  const handleCloseDetails = () => {
+    setDetailsDialogOpen(false);
+    setSelectedEmployee(null);
+  };
+
+  const handleOpenDelete = (employeeId: number) => {
+    setSelectedEmployee(employeeId);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleCloseDelete = () => {
     setDeleteDialogOpen(false);
     setSelectedEmployee(null);
   };
@@ -126,10 +145,7 @@ export default function EmployeesPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem
-                            onClick={() => {
-                              setSelectedEmployee(employee.id);
-                              setDetailsDialogOpen(true);
-                            }}
+                            onClick={() => handleOpenDetails(employee.id)}
                           >
                             View Details
                           </DropdownMenuItem>
@@ -141,10 +157,7 @@ export default function EmployeesPage() {
                           <DropdownMenuItem>Edit</DropdownMenuItem>
                           <DropdownMenuItem
                             className="text-destructive"
-                            onClick={() => {
-                              setSelectedEmployee(employee.id);
-                              setDeleteDialogOpen(true);
-                            }}
+                            onClick={() => handleOpenDelete(employee.id)}
                           >
                             Delete
                           </DropdownMenuItem>
@@ -164,15 +177,15 @@ export default function EmployeesPage() {
 
           <DeleteConfirmationDialog
             open={deleteDialogOpen}
-            onOpenChange={setDeleteDialogOpen}
+            onOpenChange={handleCloseDelete}
             onConfirm={handleDeleteConfirm}
             title="Delete Employee"
             description="Are you sure you want to delete this employee? This action cannot be undone."
           />
 
-          <EmployeeDetailsDialog
+          <EmployeeDetailsDialog 
             open={detailsDialogOpen}
-            onOpenChange={setDetailsDialogOpen}
+            onOpenChange={handleCloseDetails}
             employeeId={selectedEmployee}
           />
         </main>
