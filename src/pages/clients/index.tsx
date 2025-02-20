@@ -22,14 +22,18 @@ import {
 import { MoreHorizontal } from "lucide-react";
 import { AddClientDialog } from "@/components/dialogs/AddClientDialog";
 import { DeleteConfirmationDialog } from "@/components/dialogs/DeleteConfirmationDialog";
-import { PatentDetailsDialog } from "@/components/dialogs/PatentDetailsDialog";
+import { ClientDetailsDialog } from "@/components/dialogs/ClientDetailsDialog";
+import { EditClientDialog } from "@/components/dialogs/EditClientDialog";
+import { useNavigate } from "react-router-dom";
 
 export default function ClientsPage() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState<string | null>(null);
-  const [patentDetailsOpen, setPatentDetailsOpen] = useState(false);
+  const [viewDetailsOpen, setViewDetailsOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const handleDeleteConfirm = () => {
     console.log("Deleting client:", selectedClient);
@@ -80,7 +84,6 @@ export default function ClientsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {/* Add table rows with client data */}
                 <TableRow>
                   <TableCell>Acme Corporation</TableCell>
                   <TableCell>John Doe</TableCell>
@@ -95,13 +98,25 @@ export default function ClientsPage() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => {/* View Details */}}>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setSelectedClient("1");
+                            setViewDetailsOpen(true);
+                          }}
+                        >
                           View Details
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setPatentDetailsOpen(true)}>
+                        <DropdownMenuItem
+                          onClick={() => navigate("/clients/1/patents")}
+                        >
                           View Patents
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => {/* Edit Client */}}>
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setSelectedClient("1");
+                            setEditDialogOpen(true);
+                          }}
+                        >
                           Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
@@ -134,10 +149,16 @@ export default function ClientsPage() {
             description="Are you sure you want to delete this client? This action cannot be undone."
           />
 
-          <PatentDetailsDialog
-            open={patentDetailsOpen}
-            onOpenChange={setPatentDetailsOpen}
-            patentId={selectedClient}
+          <ClientDetailsDialog
+            open={viewDetailsOpen}
+            onOpenChange={setViewDetailsOpen}
+            clientId={selectedClient}
+          />
+
+          <EditClientDialog
+            open={editDialogOpen}
+            onOpenChange={setEditDialogOpen}
+            clientId={selectedClient}
           />
         </main>
       </div>

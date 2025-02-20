@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import EmployeesPage from "./pages/employees";
 import PatentsPage from "./pages/patents";
 import ClientsPage from "./pages/clients";
+import ClientPatentsPage from "./pages/clients/[id]/patents";
 import SettingsPage from "./pages/settings";
 import SearchPage from "./pages/search";
 import NotFound from "./pages/NotFound";
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/employees" element={<EmployeesPage />} />
           <Route path="/patents" element={<PatentsPage />} />
           <Route path="/clients" element={<ClientsPage />} />
+          <Route path="/clients/:id/patents" element={<ClientPatentsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="*" element={<NotFound />} />
