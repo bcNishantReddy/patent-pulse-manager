@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Download, Share2 } from "lucide-react";
@@ -16,7 +17,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface PatentDetailsDialogProps {
@@ -71,43 +71,33 @@ export function PatentDetailsDialog({
   patentId,
 }: PatentDetailsDialogProps) {
   const handleDownload = () => {
-    // Implement download logic
     console.log("Downloading details for patent:", patentId);
   };
 
   const handleShare = () => {
-    // Implement share logic
     console.log("Sharing details for patent:", patentId);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[700px] max-h-[90vh]">
+      <DialogContent className="sm:max-w-[700px] h-[90vh] flex flex-col">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle>Patent Details</DialogTitle>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={handleDownload}
-              >
-                <Download className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={handleShare}
-              >
-                <Share2 className="h-4 w-4" />
-              </Button>
-            </div>
+          <DialogTitle>Patent Details</DialogTitle>
+          <DialogDescription>
+            View complete patent processing timeline and details
+          </DialogDescription>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" size="icon" onClick={handleDownload}>
+              <Download className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="icon" onClick={handleShare}>
+              <Share2 className="h-4 w-4" />
+            </Button>
           </div>
         </DialogHeader>
 
-        <ScrollArea className="max-h-[600px] pr-4">
+        <ScrollArea className="flex-1 pr-4">
           <div className="space-y-6">
-            {/* Patent Overview */}
             <Card>
               <CardHeader>
                 <CardTitle>{patentDetails.title}</CardTitle>
@@ -116,7 +106,7 @@ export function PatentDetailsDialog({
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm font-medium">Inventors</p>
                     <p className="text-sm text-muted-foreground">
@@ -145,7 +135,6 @@ export function PatentDetailsDialog({
               </CardContent>
             </Card>
 
-            {/* Timeline */}
             <Card>
               <CardHeader>
                 <CardTitle>Processing Timeline</CardTitle>

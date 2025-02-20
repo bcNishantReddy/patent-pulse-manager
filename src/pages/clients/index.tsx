@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { AppSidebar } from "@/components/layout/AppSidebar";
@@ -20,30 +21,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { AddClientDialog } from "@/components/dialogs/AddClientDialog";
-
-const clients = [
-  {
-    id: 1,
-    name: "Acme Corporation",
-    contactPerson: "John Smith",
-    email: "john@acme.com",
-    phone: "+1 (555) 123-4567",
-    activePatents: 5,
-  },
-  {
-    id: 2,
-    name: "TechCorp Inc",
-    contactPerson: "Jane Wilson",
-    email: "jane@techcorp.com",
-    phone: "+1 (555) 987-6543",
-    activePatents: 3,
-  },
-  // Add more client data as needed
-];
+import { DeleteConfirmationDialog } from "@/components/dialogs/DeleteConfirmationDialog";
+import { PatentDetailsDialog } from "@/components/dialogs/PatentDetailsDialog";
 
 export default function ClientsPage() {
   const [search, setSearch] = useState("");
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<string | null>(null);
+  const [patentDetailsOpen, setPatentDetailsOpen] = useState(false);
+
+  const handleDeleteConfirm = () => {
+    console.log("Deleting client:", selectedClient);
+    setDeleteDialogOpen(false);
+    setSelectedClient(null);
+  };
 
   return (
     <SidebarProvider>
@@ -79,46 +71,52 @@ export default function ClientsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Company Name</TableHead>
+                  <TableHead>Client Name</TableHead>
                   <TableHead>Contact Person</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Phone</TableHead>
-                  <TableHead>Active Patents</TableHead>
+                  <TableHead>Patents</TableHead>
                   <TableHead className="w-[50px]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {clients.map((client) => (
-                  <TableRow key={client.id}>
-                    <TableCell className="font-medium">
-                      {client.name}
-                    </TableCell>
-                    <TableCell>{client.contactPerson}</TableCell>
-                    <TableCell>{client.email}</TableCell>
-                    <TableCell>{client.phone}</TableCell>
-                    <TableCell>{client.activePatents}</TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            className="h-8 w-8 p-0"
-                          >
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>View Details</DropdownMenuItem>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem>View Patents</DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive">
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {/* Add table rows with client data */}
+                <TableRow>
+                  <TableCell>Acme Corporation</TableCell>
+                  <TableCell>John Doe</TableCell>
+                  <TableCell>john@acme.com</TableCell>
+                  <TableCell>+1 234 567 890</TableCell>
+                  <TableCell>5 Patents</TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => {/* View Details */}}>
+                          View Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setPatentDetailsOpen(true)}>
+                          View Patents
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => {/* Edit Client */}}>
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-destructive"
+                          onClick={() => {
+                            setSelectedClient("1");
+                            setDeleteDialogOpen(true);
+                          }}
+                        >
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </div>
@@ -126,6 +124,20 @@ export default function ClientsPage() {
           <AddClientDialog
             open={addDialogOpen}
             onOpenChange={setAddDialogOpen}
+          />
+
+          <DeleteConfirmationDialog
+            open={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
+            onConfirm={handleDeleteConfirm}
+            title="Delete Client"
+            description="Are you sure you want to delete this client? This action cannot be undone."
+          />
+
+          <PatentDetailsDialog
+            open={patentDetailsOpen}
+            onOpenChange={setPatentDetailsOpen}
+            patentId={selectedClient}
           />
         </main>
       </div>
