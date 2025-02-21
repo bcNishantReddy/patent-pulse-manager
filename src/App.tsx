@@ -12,6 +12,10 @@ import ClientPatentsPage from "./pages/clients/[id]/patents";
 import SettingsPage from "./pages/settings";
 import SearchPage from "./pages/search";
 import NotFound from "./pages/NotFound";
+import DrafterDashboardPage from "./pages/drafters/dashboard";
+import DrafterCompletedPage from "./pages/drafters/completed";
+import FillerDashboardPage from "./pages/fillers/dashboard";
+import FillerCompletedPage from "./pages/fillers/completed";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +33,10 @@ const App = () => (
           <Route path="/clients/:id/patents" element={<ClientPatentsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/drafters/dashboard" element={<DrafterDashboardPage />} />
+          <Route path="/drafters/completed" element={<DrafterCompletedPage />} />
+          <Route path="/fillers/dashboard" element={<FillerDashboardPage />} />
+          <Route path="/fillers/completed" element={<FillerCompletedPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
