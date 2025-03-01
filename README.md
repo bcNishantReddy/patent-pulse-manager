@@ -1,7 +1,7 @@
 # Patent ERP
 
 This is a Django-based Patent Management System. Follow the steps below to set up and run the project locally.
-
+Also check https://docs.google.com/document/d/1oJHTRWmloPEPy0QSkT1vGfbqIhi7tMDarN_7kzY5PlQ/edit?usp=sharing
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
